@@ -38,7 +38,14 @@ class DownloadStrings  extends DefaultTask {
         ///////
 
         def urlString = "https://api.lokalise.co/api/project/export"
-        def queryString = "api_token=${lokalise_token}&id=${lokalise_id}&type=xml&export_sort=a_z&export_empty=base&include_comments=1&include_description=1"
+        def queryString = "api_token=${lokalise_token}&id=${lokalise_id}&" +
+                "type=xml&" +
+                "export_all=1&" +
+                "export_sort=a_z&" +
+                "export_empty=base&" +
+                "include_comments=1&" +
+                "include_description=1&" +
+                "replace_breaks=1"
         def url = new URL(urlString)
         def connection = url.openConnection()
         connection.setRequestMethod("POST")
