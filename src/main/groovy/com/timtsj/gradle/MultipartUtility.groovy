@@ -1,4 +1,4 @@
-package com.likandr.gradle
+package com.timtsj.gradle
 
 /**
  * This utility class provides an abstraction layer for sending multipart HTTP

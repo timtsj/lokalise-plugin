@@ -1,8 +1,8 @@
-package com.likandr.gradle
+package com.timtsj.gradle
 
-import com.likandr.gradle.tasks.DownloadStrings
-import com.likandr.gradle.tasks.RefreshStrings
-import com.likandr.gradle.tasks.UploadStrings
+import com.timtsj.gradle.tasks.DownloadStrings
+import com.timtsj.gradle.tasks.RefreshStrings
+import com.timtsj.gradle.tasks.UploadStrings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

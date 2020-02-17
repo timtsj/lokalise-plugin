@@ -1,4 +1,4 @@
-package com.likandr.gradle
+package com.timtsj.gradle
 
 class LokaliseExtensionDataChecker {
     static def validateExtensionDataIsCorrect(LokalisePluginExtension extension, String projectName) {

@@ -1,6 +1,6 @@
-package com.likandr.gradle.tasks
+package com.timtsj.gradle.tasks
 
-import com.likandr.gradle.MultipartUtility
+import com.timtsj.gradle.MultipartUtility
 import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project

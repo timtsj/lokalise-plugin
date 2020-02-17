@@ -1,4 +1,4 @@
-package com.likandr.gradle.tasks
+package com.timtsj.gradle.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input

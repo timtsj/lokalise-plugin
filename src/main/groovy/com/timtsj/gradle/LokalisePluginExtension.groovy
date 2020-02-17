@@ -1,4 +1,4 @@
-package com.likandr.gradle
+package com.timtsj.gradle
 
 class LokalisePluginExtension {
     String id

@@ -1,4 +1,4 @@
-package com.likandr.gradle.tasks
+package com.timtsj.gradle.tasks
 
 import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask

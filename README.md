@@ -1,8 +1,6 @@
 ## Android gradle plugin for refresh localisation strings using lokalise.co
 
-[![CircleCI](https://circleci.com/gh/Likandr/lokalise-plugin.svg?style=svg)](https://circleci.com/gh/Likandr/lokalise-plugin) 
-
-This is a gradle plugin for android. Refresh (upload and download) localization files using lokalise.co
+This is a gradle plugin for android forked from https://github.com/Likandr/lokalise-plugin. Refresh (upload and download) localization files using lokalise.co
 
 ## Use guide:
 ### in gradle, project level:
@@ -13,7 +11,7 @@ buildscript {
     }
     dependencies {
 	..
-        classpath  'com.github.likandr:lokalise-plugin:1.3'
+        classpath  'com.github.timtsj:lokalise-plugin:1.5'
 	..
     }
 }
@@ -22,7 +20,7 @@ buildscript {
 ```groovy
 apply plugin: 'com.android.application'
 ..
-apply plugin: 'com.likandr.lokalise'
+apply plugin: 'com.timtsj.lokalise'
 ..
 android {
     ..
