@@ -10,9 +10,9 @@ class LokalisePluginExtension {
         this.project = project
     }
 
-    LokaliseProject proj(Closure closure) {
-        def project = this.project.configure(new LokaliseProject(), closure)
-        projects.add(project)
-        return project
+    LokaliseProject generator(Closure closure) {
+        def generator = this.project.configure(new LokaliseProject(), closure)
+        projects.add(generator)
+        return generator
     }
 }

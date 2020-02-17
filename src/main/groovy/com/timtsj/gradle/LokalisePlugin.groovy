@@ -32,8 +32,9 @@ class LokalisePlugin implements Plugin<Project> {
                 extension.projects.each {
                     lokalise_token = it.token
                     lokalise_id = it.id
+                    file_name = it.fileName
+                    project = target
                 }
-                project = target
             }
             lokaliseDownload.group = "lokalise"
             lokaliseDownload.description = "Download localise files"

@@ -1,18 +1,30 @@
 package com.timtsj.gradle.tasks
 
+import groovy.io.FileType
 import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskExecutionException
 
-class DownloadStrings  extends DefaultTask {
+class DownloadStrings extends DefaultTask {
+
     def separator = File.separator
-    @Input Project project
-    @Input String lokalise_token
-    @Input String lokalise_id
-    @Input String file_name
+
+    @Input
+    Project project
+
+    @Input
+    String lokalise_token
+
+    @Input
+    String lokalise_id
+
+    @Input
+    @Optional
+    String file_name
 
     @TaskAction
     def handle() {
@@ -39,7 +51,14 @@ class DownloadStrings  extends DefaultTask {
         ///////
 
         def urlString = "https://api.lokalise.co/api/project/export"
-        def queryString = "api_token=${lokalise_token}&id=${lokalise_id}&type=xml&export_sort=a_z&export_empty=base&include_comments=1&include_description=1"
+        def queryString = "api_token=${lokalise_token}&id=${lokalise_id}&" +
+                "type=xml&" +
+                "export_all=1&" +
+                "export_sort=a_z&" +
+                "export_empty=base&" +
+                "include_comments=1&" +
+                "include_description=1&" +
+                "replace_breaks=1"
         def url = new URL(urlString)
         def connection = url.openConnection()
         connection.setRequestMethod("POST")
@@ -79,10 +98,15 @@ class DownloadStrings  extends DefaultTask {
         saveUrlContentToFile(zipPath, filePathUrl)
 
         println "Unzipping downloaded file into res folder..."
-        unzipReceivedZipFile(zipPath, dirRes)
+        unzipReceivedZipFile(zipPath, dirForUnzipped)
 
-//        println "Rename downloaded file..."
-//        renameReceivedFile(dirForUnzipped)
+        if (file_name != null) {
+            println "Rename downloaded file..."
+            renameReceivedFile(dirForUnzipped)
+        }
+
+//        println "Clear res dir..."
+//        clearDirRes(dirRes)
 
         println "Move unzipped files to res dir..."
         copyToRes(dirForUnzipped, dirRes)
@@ -109,9 +133,25 @@ class DownloadStrings  extends DefaultTask {
         }
     }
 
-//    private void renameReceivedFile(dirForUnzipped) {
-//        new File(dirForUnzipped).renameTo(new File(file_name))
-//    }
+    private void renameReceivedFile(String dirForUnzipped) {
+        def unzippedDir = new File(dirForUnzipped)
+        unzippedDir.parentFile.eachFileRecurse(FileType.FILES) {
+            if (it.name.endsWith('.xml')) {
+                def destPath = "${it.parent}${File.separator}${file_name}.xml"
+                def dest = new File(destPath)
+                it.renameTo(dest)
+                assert dest.exists()
+                assert !it.exists()
+            }
+        }
+    }
+
+    private void clearDirRes(dirRes) {
+        def file = dirRes as File
+        file.parentFile.eachFileRecurse(FileType.FILES) {
+            if (it.name.contains('strings')) it.delete()
+        }
+    }
 
     private void copyToRes(dirForUnzipped, dirRes) {
         project.copy {
