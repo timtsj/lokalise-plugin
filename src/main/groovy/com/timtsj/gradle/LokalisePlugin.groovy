@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 class LokalisePlugin implements Plugin<Project> {
     @Override void apply(Project target) {
-        target.extensions.add("lokalise", LokalisePluginExtension)
+        target.extensions.add("lokalise", new LokalisePluginExtension(target))
 
         target.afterEvaluate {
             def android = target.extensions.getByName("android")
@@ -29,8 +29,10 @@ class LokalisePlugin implements Plugin<Project> {
             lokaliseUpload.description = "Upload localise files"
 
             def lokaliseDownload = target.tasks.create("downloadStrings", DownloadStrings) {
-                lokalise_token = extension.token
-                lokalise_id = extension.id
+                extension.projects.each {
+                    lokalise_token = it.token
+                    lokalise_id = it.id
+                }
                 project = target
             }
             lokaliseDownload.group = "lokalise"

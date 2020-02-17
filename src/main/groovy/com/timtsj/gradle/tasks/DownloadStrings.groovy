@@ -9,9 +9,10 @@ import org.gradle.api.tasks.TaskExecutionException
 
 class DownloadStrings  extends DefaultTask {
     def separator = File.separator
+    @Input Project project
     @Input String lokalise_token
     @Input String lokalise_id
-    @Input Project project
+    @Input String file_name
 
     @TaskAction
     def handle() {
@@ -80,6 +81,9 @@ class DownloadStrings  extends DefaultTask {
         println "Unzipping downloaded file into res folder..."
         unzipReceivedZipFile(zipPath, dirRes)
 
+//        println "Rename downloaded file..."
+//        renameReceivedFile(dirForUnzipped)
+
         println "Move unzipped files to res dir..."
         copyToRes(dirForUnzipped, dirRes)
 
@@ -104,6 +108,10 @@ class DownloadStrings  extends DefaultTask {
             into dirForUnzipped
         }
     }
+
+//    private void renameReceivedFile(dirForUnzipped) {
+//        new File(dirForUnzipped).renameTo(new File(file_name))
+//    }
 
     private void copyToRes(dirForUnzipped, dirRes) {
         project.copy {
