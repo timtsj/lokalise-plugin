@@ -29,9 +29,10 @@ class LokalisePlugin implements Plugin<Project> {
             lokaliseUpload.description = "Upload localise files"
 
             def lokaliseDownload = target.tasks.create("downloadStrings", DownloadStrings) {
-                lokalise_token = extension.token
-                lokalise_id = extension.id
                 project = target
+                lokalise_id = extension.id
+                lokalise_token = extension.token
+                file_name = extension.fileName
             }
             lokaliseDownload.group = "lokalise"
             lokaliseDownload.description = "Download localise files"

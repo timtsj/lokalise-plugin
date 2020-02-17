@@ -1,17 +1,30 @@
 package com.timtsj.gradle.tasks
 
+import groovy.io.FileType
 import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskExecutionException
 
-class DownloadStrings  extends DefaultTask {
+class DownloadStrings extends DefaultTask {
+
     def separator = File.separator
-    @Input String lokalise_token
-    @Input String lokalise_id
-    @Input Project project
+
+    @Input
+    Project project
+
+    @Input
+    String lokalise_token
+
+    @Input
+    String lokalise_id
+
+    @Input
+    @Optional
+    String file_name
 
     @TaskAction
     def handle() {
@@ -85,7 +98,15 @@ class DownloadStrings  extends DefaultTask {
         saveUrlContentToFile(zipPath, filePathUrl)
 
         println "Unzipping downloaded file into res folder..."
-        unzipReceivedZipFile(zipPath, dirRes)
+        unzipReceivedZipFile(zipPath, dirForUnzipped)
+
+        if (file_name != null) {
+            println "Rename downloaded file..."
+            renameReceivedFile(dirForUnzipped)
+        }
+
+//        println "Clear res dir..."
+//        clearDirRes(dirRes)
 
         println "Move unzipped files to res dir..."
         copyToRes(dirForUnzipped, dirRes)
@@ -109,6 +130,26 @@ class DownloadStrings  extends DefaultTask {
         project.copy {
             from project.zipTree(new File(fullZipFilePath))
             into dirForUnzipped
+        }
+    }
+
+    private void renameReceivedFile(String dirForUnzipped) {
+        def unzippedDir = new File(dirForUnzipped)
+        unzippedDir.parentFile.eachFileRecurse(FileType.FILES) {
+            if (it.name.endsWith('.xml')) {
+                def destPath = "${it.parent}${File.separator}${file_name}.xml"
+                def dest = new File(destPath)
+                it.renameTo(dest)
+                assert dest.exists()
+                assert !it.exists()
+            }
+        }
+    }
+
+    private void clearDirRes(dirRes) {
+        def file = dirRes as File
+        file.parentFile.eachFileRecurse(FileType.FILES) {
+            if (it.name.contains('strings')) it.delete()
         }
     }
 
